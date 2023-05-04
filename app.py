@@ -7,7 +7,7 @@ import base64
 import os
 
 # for processing the images
-from PIL import Image
+from PIL import Image, ImageOps
 
 # image to text extractions
 import pytesseract
@@ -43,11 +43,17 @@ def upload_image():
         # loading the image using PIL library
         image = Image.open(image_path)
 
+        grayscale_image = ImageOps.grayscale(image)
+
+        image = grayscale_image
+
+        image.save(image_path)
+
         # extracting all the text from the image
         text = pytesseract.image_to_string(image)
 
         # pattern to be matched:- starting with L, having two characters, and 7 digits
-        pattern = r"L\w{2}\d{7}"
+        pattern = r"\w{3}\d{7}"
 
         # searching for the pattern in the text
         match = re.search(pattern, text)
@@ -58,6 +64,7 @@ def upload_image():
             print(roll_number)  # Output: LCS2021005
         else:
             print("Roll number not found.")
+            roll_number = -1
         
         # senting the roll number to client side in the form of json object
         return jsonify({'message': roll_number})
