@@ -7,7 +7,7 @@ import base64
 import os
 
 # for processing the images
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageEnhance
 
 # image to text extractions
 import pytesseract
@@ -43,11 +43,20 @@ def upload_image():
         # loading the image using PIL library
         image = Image.open(image_path)
 
+        # converting the image to its grayscale form
         grayscale_image = ImageOps.grayscale(image)
 
+        # replacing the original image by its grayscale form
         image = grayscale_image
 
-        image.save(image_path)
+        enhancer = ImageEnhance.Contrast(image)
+
+        factor = 1.5 #increase contrast
+        more_contrast_image = enhancer.enhance(factor)
+        more_contrast_image.save(image_path)
+
+        # saving the grayscale image to the original image path
+        # image.save(image_path)
 
         # extracting all the text from the image
         text = pytesseract.image_to_string(image)
@@ -57,6 +66,8 @@ def upload_image():
 
         # searching for the pattern in the text
         match = re.search(pattern, text)
+
+        print(text)
 
         # if matched, assigning the roll number
         if match:
