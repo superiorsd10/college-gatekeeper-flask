@@ -21,8 +21,8 @@ import os
 from PIL import Image, ImageOps, ImageEnhance
 
 # image to text extractions
-import sys
-sys.path.insert(0, '/Users/sachin/Desktop/Python Academics/College GateKeeper/college-gatekeeper-flask/pytesseract-0.3.10')
+# import sys
+# sys.path.insert(0, '/Users/sachin/Desktop/Python Academics/College GateKeeper/college-gatekeeper-flask/pytesseract-0.3.10')
 import pytesseract
 
 # regular expressions
@@ -102,7 +102,7 @@ def upload_image():
             return jsonify({'message': 'library error'})
 
         # pattern to be matched:- starting with L, having two characters, and 7 digits
-        pattern = r"\w{3}\d{7}"
+        pattern = r"[A-Z]{3}\d{7}"
 
         # searching for the pattern in the text
         match = re.search(pattern, text)
