@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, abort
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-path = '/Users/sachin/Desktop/Python Academics/College GateKeeper/college-gatekeeper-flask/college-gatekeeper-firebase-adminsdk-3ss20-fdf904afec.json'
+path = 'college-gatekeeper-firebase-adminsdk-3ss20-fdf904afec.json'
 
 cred = credentials.Certificate(path)
 firebase_admin.initialize_app(cred)
