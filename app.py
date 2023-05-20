@@ -123,6 +123,11 @@ def confirm_roll_number():
             # referring to the data collection with date document 
             collection_ref = db.collection('data').document(date).collection('entries')
 
+            date_document_ref = db.collection('data').document(date)
+            date_document_ref.set({
+                'Server Timestamp': firestore.SERVER_TIMESTAMP,
+            })
+
             # referring to the document with confirmed roll number
             search_roll_number_ref = collection_ref.document(roll_number)
 
