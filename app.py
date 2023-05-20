@@ -150,3 +150,6 @@ def confirm_roll_number():
         abort(400, 'Invalid request body')
     except:
         abort(500, 'Internal server error')
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8080)
