@@ -124,7 +124,7 @@ def upload_image():
             roll_number = -1
         
         # senting the roll number to client side in the form of json object
-        return jsonify({'message': roll_number})
+        return jsonify({'message': str(roll_number)})
     except KeyError:
         abort(400, 'Invalid request body')
     except:
