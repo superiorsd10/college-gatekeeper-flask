@@ -60,22 +60,16 @@ def upload_image():
 
         blob.upload_from_string(image_data, content_type=blob.content_type)
 
-        try:
-            signed_url = blob.generate_signed_url(
-                version='v4',
-                expiration=datetime.timedelta(days=7),  # Set the desired expiration time
-                method='GET'
-            )
+        signed_url = blob.generate_signed_url(
+            version='v4',
+            expiration=datetime.timedelta(days=7),  # Set the desired expiration time
+            method='GET'
+        )
 
-            response = requests.get(signed_url)
-            image_data = response.content
-        except:
-            return jsonify({'message': 'signed url not working'})
+        response = requests.get(signed_url)
+        image_data = response.content
 
-        try:
-            image = Image.open(io.BytesIO(image_data))
-        except:
-            return jsonify({'message': 'image opening not working'})
+        image = Image.open(io.BytesIO(image_data))
         
         # saving the image data as jpg file by creating a new file
         # with open(image_path, 'wb') as f:
