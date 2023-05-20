@@ -21,6 +21,8 @@ import os
 from PIL import Image, ImageOps, ImageEnhance
 
 # image to text extractions
+import sys
+sys.path.insert(0, '/Users/sachin/Desktop/Python Academics/College GateKeeper/college-gatekeeper-flask/pytesseract-0.3.10')
 import pytesseract
 
 # regular expressions
