@@ -24,6 +24,7 @@ from PIL import Image, ImageOps, ImageEnhance
 import sys
 sys.path.insert(0, '/Users/sachin/Desktop/Python Academics/College GateKeeper/college-gatekeeper-flask/pytesseract')
 import pytesseract
+from pytesseract import image_to_string
 
 # regular expressions
 import re 
