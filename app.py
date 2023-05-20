@@ -69,7 +69,10 @@ def upload_image():
         response = requests.get(signed_url)
         image_data = response.content
 
-        image = Image.open(io.BytesIO(image_data))
+        try:
+            image = Image.open(io.BytesIO(image_data))
+        except:
+            abort(500, 'Invalid request image')
         
         # saving the image data as jpg file by creating a new file
         # with open(image_path, 'wb') as f:
@@ -102,7 +105,7 @@ def upload_image():
         # searching for the pattern in the text
         match = re.search(pattern, text)
 
-        print(text)
+        # print(text)
 
         # if matched, assigning the roll number
         if match:
@@ -114,9 +117,9 @@ def upload_image():
             is_found_one = roll_number_branch.find("1")
             if is_found_one:
                 roll_number.replace("1", "I")
-            print(roll_number)  # Output: LCS2021005
+            # print(roll_number)  # Output: LCS2021005
         else:
-            print("Roll number not found.")
+            # print("Roll number not found.")
             roll_number = -1
         
         # senting the roll number to client side in the form of json object
