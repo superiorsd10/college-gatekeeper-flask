@@ -22,7 +22,7 @@ from PIL import Image, ImageOps, ImageEnhance
 
 # image to text extractions
 import sys
-sys.path.insert(0, '/Users/sachin/Desktop/Python Academics/College GateKeeper/college-gatekeeper-flask/pytesseract')
+sys.path.insert(0, 'college-gatekeeper-flask/pytesseract')
 import pytesseract
 from pytesseract import image_to_string
 
