@@ -79,16 +79,16 @@ def upload_image():
         # image = Image.open(image_path)
 
         # converting the image to its grayscale form
-        grayscale_image = ImageOps.grayscale(image)
+        # grayscale_image = ImageOps.grayscale(image)
 
         # replacing the original image by its grayscale form
-        image = grayscale_image
+        # image = grayscale_image
 
-        enhancer = ImageEnhance.Contrast(image)
+        # enhancer = ImageEnhance.Contrast(image)
 
-        factor = 1.5 #increase contrast
-        more_contrast_image = enhancer.enhance(factor)
-        more_contrast_image.save(image_path)
+        # factor = 1.5 #increase contrast
+        # more_contrast_image = enhancer.enhance(factor)
+        # more_contrast_image.save(image_path)
 
         # saving the grayscale image to the original image path
         # image.save(image_path)
