@@ -43,6 +43,8 @@ def upload_image():
         # getting the json data sent from the client side
         json_data = request.get_json()
 
+        # adding the dead comment
+
         # accessing the base 64 encoded image string sent from the client side
         image_data = json_data['image']
 
