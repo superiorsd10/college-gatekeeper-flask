@@ -94,7 +94,10 @@ def upload_image():
         # image.save(image_path)
 
         # extracting all the text from the image
-        text = pytesseract.image_to_string(image)
+        try:
+            text = pytesseract.image_to_string(image)
+        except:
+            return jsonify({'message': 'library error'})
 
         # pattern to be matched:- starting with L, having two characters, and 7 digits
         pattern = r"\w{3}\d{7}"
