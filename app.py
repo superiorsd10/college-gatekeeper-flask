@@ -131,16 +131,33 @@ def confirm_roll_number():
 
             # if the document already exists
             if search_roll_number_snapshot.exists:
-
-                # deleting the document and returning the json response
-                search_roll_number_ref.delete()
-                return jsonify({'message': 'in-time recorded'})
+                existing_document_data = search_roll_number_snapshot.to_dict()
+                in_time_field = existing_document_data['In Time']
+                out_time_field = existing_document_data['Out Time']
+                if in_time_field == "-1":
+                    updated_data = {
+                        'Roll No': roll_number, 
+                        'Out Time': out_time_field, 
+                        'In Time': firestore.SERVER_TIMESTAMP,
+                        'Server Timestamp': firestore.SERVER_TIMESTAMP,
+                    }
+                    search_roll_number_ref.set(updated_data)
+                    return jsonify({'message': 'in-time recorded'})
+                else:
+                    updated_data = {
+                        'Roll No': roll_number, 
+                        'Out Time': firestore.SERVER_TIMESTAMP, 
+                        'In Time': "-1",
+                        'Server Timestamp': firestore.SERVER_TIMESTAMP,
+                    }
+                    search_roll_number_ref.set(updated_data)
+                    return jsonify({'message': 'out-time recorded'})
             else:
-
                 # else recording the data and inserting the document
                 data = {
                     'Roll No': roll_number, 
-                    'In Time': firestore.SERVER_TIMESTAMP, 
+                    'Out Time': firestore.SERVER_TIMESTAMP, 
+                    'In Time': "-1",
                     'Server Timestamp': firestore.SERVER_TIMESTAMP,
                 }
                 doc_ref = collection_ref.document(roll_number)
