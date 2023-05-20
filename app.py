@@ -1,12 +1,14 @@
 from flask import Flask, request, jsonify, abort
 
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, storage
 
 path = 'college-gatekeeper-firebase-adminsdk-3ss20-fdf904afec.json'
 
 cred = credentials.Certificate(path)
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'college-gatekeeper.appspot.com'
+})
 
 
 # for base 64 encoding and decoding purposes
@@ -27,7 +29,13 @@ import re
 # for current date time
 import datetime
 
+import requests
+
+import io
+
 app = Flask(__name__)
+
+bucket = storage.bucket()
 
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
@@ -44,13 +52,29 @@ def upload_image():
         current_time = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
         image_path = os.path.join('images', f'{current_time}.jpg')
+
+        blob = bucket.blob(image_path)
+        blob.content_type = 'image/jpg'
+
+        blob.upload_from_string(image_data, content_type=blob.content_type)
+
+        signed_url = blob.generate_signed_url(
+            version='v4',
+            expiration=datetime.timedelta(days=7),  # Set the desired expiration time
+            method='GET'
+        )
+
+        response = requests.get(signed_url)
+        image_data = response.content
+
+        image = Image.open(io.BytesIO(image_data))
         
         # saving the image data as jpg file by creating a new file
-        with open(image_path, 'wb') as f:
-            f.write(image_data)
+        # with open(image_path, 'wb') as f:
+        #     f.write(image_data)
 
         # loading the image using PIL library
-        image = Image.open(image_path)
+        # image = Image.open(image_path)
 
         # converting the image to its grayscale form
         grayscale_image = ImageOps.grayscale(image)
