@@ -106,6 +106,10 @@ def upload_image():
         # searching for the pattern in the text
         match = re.search(pattern, text)
 
+        # print(firestore.SERVER_TIMESTAMP.ToDateTime())
+
+        # d = firestore.SERVER_TIMSETAMP.toDate()
+        # print(d.toString())
         # print(text)
 
         # if matched, assigning the roll number
@@ -121,10 +125,10 @@ def upload_image():
             # print(roll_number)  # Output: LCS2021005
         else:
             # print("Roll number not found.")
-            roll_number = -1
+            roll_number = "Roll Number Not Found"
         
         # senting the roll number to client side in the form of json object
-        return jsonify({'message': str(roll_number)})
+        return jsonify({'message': roll_number})
     except KeyError:
         abort(400, 'Invalid request body')
     except:
@@ -145,6 +149,9 @@ def confirm_roll_number():
 
         # recording the current date
         date = datetime.datetime.now().strftime("%d-%m-%y")
+
+        day = int(datetime.datetime.now().strftime("%d"))
+        hour = int(datetime.datetime.now().strftime("%H"))
 
         # if the sent roll number was correct
         if is_roll_number_confirm:
@@ -177,6 +184,18 @@ def confirm_roll_number():
                         'Server Timestamp': firestore.SERVER_TIMESTAMP,
                     }
                     search_roll_number_ref.set(updated_data)
+                    out_time_field_string = str(out_time_field)
+                    out_time_field_num = int(out_time_field_string[8:10])
+
+                    # print(day != out_time_field_num or hour >= 13)
+
+                    if day != out_time_field_num or hour >= 23:
+                        defaulter_collection_ref = db.collection('defaulters')
+                        defaulter_doc_ref = defaulter_collection_ref.document(roll_number)
+                        defaulter_doc_ref.set({
+                            'Server Timestamp': firestore.SERVER_TIMESTAMP,
+                        })
+
                     return jsonify({'message': 'in-time recorded'})
                 else:
                     updated_data = {
